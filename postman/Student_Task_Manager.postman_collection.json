@@ -1,0 +1,367 @@
+{
+  "info": {
+    "name": "Student Task Manager API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:5000/api"
+    }
+  ],
+  "item": [
+    {
+      "name": "0. Health check (DB connected)",
+      "request": {
+        "method": "GET",
+        "description": "",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/health",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "health"
+          ]
+        }
+      }
+    },
+    {
+      "name": "1. Create task",
+      "request": {
+        "method": "POST",
+        "description": "Expect 201",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Math assignment\",\n  \"description\": \"Chapter 4 exercises\",\n  \"subject\": \"Mathematics\",\n  \"dueDate\": \"2026-11-10\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tasks",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks"
+          ]
+        }
+      }
+    },
+    {
+      "name": "1b. Create task - INVALID",
+      "request": {
+        "method": "POST",
+        "description": "Expect 400 with details",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"\",\n  \"subject\": \"\",\n  \"dueDate\": \"2026-02-31\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tasks",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks"
+          ]
+        }
+      }
+    },
+    {
+      "name": "2. Get all tasks (sorted by due date)",
+      "request": {
+        "method": "GET",
+        "description": "",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tasks",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks"
+          ]
+        }
+      }
+    },
+    {
+      "name": "2b. Filter: pending only",
+      "request": {
+        "method": "GET",
+        "description": "",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tasks?status=PENDING",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "PENDING"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "2c. Filter: completed, newest first",
+      "request": {
+        "method": "GET",
+        "description": "",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tasks?status=COMPLETED&sort=createdAt&order=desc",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks"
+          ],
+          "query": [
+            {
+              "key": "status",
+              "value": "COMPLETED"
+            },
+            {
+              "key": "sort",
+              "value": "createdAt"
+            },
+            {
+              "key": "order",
+              "value": "desc"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. Get one task",
+      "request": {
+        "method": "GET",
+        "description": "",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tasks/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "3b. Get missing task",
+      "request": {
+        "method": "GET",
+        "description": "Expect 404",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tasks/9999",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks",
+            "9999"
+          ]
+        }
+      }
+    },
+    {
+      "name": "4. Edit task",
+      "request": {
+        "method": "PUT",
+        "description": "",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"title\": \"Math assignment (edited)\",\n  \"description\": \"Chapters 4 and 5\",\n  \"subject\": \"Mathematics\",\n  \"dueDate\": \"2026-11-12\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tasks/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks",
+            "1"
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. Mark completed",
+      "request": {
+        "method": "PATCH",
+        "description": "",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"COMPLETED\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tasks/1/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks",
+            "1",
+            "status"
+          ]
+        }
+      }
+    },
+    {
+      "name": "5b. Reopen (pending)",
+      "request": {
+        "method": "PATCH",
+        "description": "",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"PENDING\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tasks/1/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks",
+            "1",
+            "status"
+          ]
+        }
+      }
+    },
+    {
+      "name": "5c. Invalid status",
+      "request": {
+        "method": "PATCH",
+        "description": "Expect 400",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"status\": \"DONE\"\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/tasks/1/status",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks",
+            "1",
+            "status"
+          ]
+        }
+      }
+    },
+    {
+      "name": "6. Statistics",
+      "request": {
+        "method": "GET",
+        "description": "",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tasks/stats",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks",
+            "stats"
+          ]
+        }
+      }
+    },
+    {
+      "name": "7. Delete task",
+      "request": {
+        "method": "DELETE",
+        "description": "",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}/tasks/1",
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "tasks",
+            "1"
+          ]
+        }
+      }
+    }
+  ]
+}
